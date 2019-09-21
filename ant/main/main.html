@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title> 335 Algorithm Engineering - Cella Ant 12</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+  </head>
+
+  <body>
+    <h1> 335 Algorithm Engineering - Cella Ant 12</h1>
+    <h3> Brian Bui & Lola Holliday</h3>
+    <canvas id="grid" width="500" height="500"></canvas>
+  </body>
+
+<script src="../assets/draw-stuff.js"></script>
+<script>
+// after "Introducing JavaScript Game Development" by Stuart.
+
+// =====================================================  draw_title ====
+// Draw filled rect.
+function draw_title( context )
+{
+    context.save( );
+    context.fillStyle = 'lightgrey';
+    context.font = "30px Arial";
+    context.fillText( "Grid", 150, 140 );
+    context.restore( );
+}
+// =====================================================  Main ====
+  var canvas = document.getElementById( "grid" );
+  var context = canvas.getContext( "2d" );
+  let counter = 0
+
+  //  main loop
+  const loopDrawRect = setInterval(() => {
+    state = counter % 4;
+    console.log(state);
+    draw_rect(context, 100, 100, 'lightgrey', state);
+    counter += 1;
+    if (counter == 1000){
+      clearInterval(loopDrawRect);
+    }
+  }, 800)
+
+
+  // Draw a grid
+  draw_grid( context, 10, 50, 'white', 'yellow' );
+  draw_title( context );
+
+
+
+</script>
+
+</html>
