@@ -19,14 +19,15 @@ function draw_rect( ctx, drawX, drawY, stroke, state )
     //  default values
     state = state || 0;
     stroke = stroke || 'lightgrey';                                     //  maybe consider deleting this because it's always grey
-    drawX = drawX || 50
-    drawY = drawY || 50
+    //    drawX = drawX || 50
+    //    drawY = drawY || 50
 
     ctx.save( );
     ctx.strokeStyle = stroke;
     ctx.fillStyle = fill;
     ctx.lineWidth = 5;
     ctx.rect(drawX, drawY, canvas.width/50, canvas.height/50);          //  consider how big a cell is
+    console.log(drawX);
     ctx.stroke();
     ctx.fill();
     ctx.restore( );

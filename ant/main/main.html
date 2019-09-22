@@ -29,13 +29,22 @@ function draw_title( context )
 // =====================================================  Main ====
   var canvas = document.getElementById( "grid" );
   var context = canvas.getContext( "2d" );
+  var drawX = 0;
+  var drawY = 0;
   let counter = 0
-
   //  main loop
   const loopDrawRect = setInterval(() => {
     state = counter % 4;
-    console.log(state);
-    draw_rect(context, 100, 100, 'lightgrey', state);
+    draw_rect(context, drawX, drawY, 'lightgrey', state);               //  each cell is 10x10
+    //  logic for the actual ant
+    //if (state % 2 == 0){
+
+    //}
+    //else {
+
+    //}
+    drawX += 10;                  //  just to see some life
+    console.log(drawX);
     counter += 1;
     if (counter == 1000){
       clearInterval(loopDrawRect);
