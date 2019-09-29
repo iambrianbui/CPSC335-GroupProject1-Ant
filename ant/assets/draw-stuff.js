@@ -27,7 +27,6 @@ function draw_rect( ctx, drawX, drawY, stroke, state )
     ctx.fillStyle = fill;
     ctx.lineWidth = 5;
     ctx.rect(drawX, drawY, canvas.width/50, canvas.height/50);          //  consider how big a cell is
-    //  console.log(drawX);
     ctx.stroke();
     ctx.fill();
     ctx.restore( );
@@ -65,6 +64,8 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
 // ===================================================== check_color ====
 function check_color(ctx, x, y){
   var colorVal = ctx.getImageData(x, y, 1, 1).data;
+
+
   console.log(colorVal);
   /*
     NOTE:
@@ -73,10 +74,71 @@ function check_color(ctx, x, y){
     255, 255, 0, 255 = YELLOW
     0, 0, 255, 255 = BLUE
   */
+  if ((colorVal[0]==0) && (colorVal[1]==0) && (colorVal[2] == 0)){
+    return 0;
+  }
+  else if ((colorVal[0]==255) && (colorVal[1]==0) && (colorVal[2] == 0)) {
+    return 1;
+  }
+  else if ((colorVal[0]==255) && (colorVal[1]==255) && (colorVal[2] == 0)) {
+    return 2;
+  }
+  else if ((colorVal[0]==0) && (colorVal[1]==0) && (colorVal[2] == 255)) {
+    return 3;
+  }
+  else
+  return 0;
 }
 
-
 // ===================================================== move_ant ====
-function move_ant(){
+function move_ant(ctx, drawCoord){
+  var currentState = check_color(ctx, drawCoord[0], drawCoord[1]);
+  var nextX = drawCoord[0];
+  var nextY = drawCoord[1];
+  var nextOrientation = drawCoord[2];
+
+
+  //  change the current color
+  switch(currentState){
+    case 0:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 1 );
+    break;
+    case 1:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 2 );
+    break;
+    case 2:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 3 );
+    break;
+    case 3:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 0 );
+    break;
+  }
+
+  //  check current orientation
+  switch (drawCoord[2]) {
+    case 0: nextY-=10;
+    break;
+    case 1: nextX+=10;
+    break;
+    case 2: nextY+=10;
+    break;
+    case 3: nextX-=10;
+    break;
+  }
+
+  //  "Turning"
+  var nextState = check_color(ctx, nextX, nextY);
+  switch (nextState) {
+    //  black and red turns right
+    case 0:  nextOrientation+=1;
+    break;
+    case 1:  nextOrientation+=1;
+    break;
+
+    //  yellow and blue turns left
+    case 2:  nextOrientation-=1;
+    break;
+    case 3:  nextOrientation-=1;
+    break;
+  }
+
+console.log(nextOrientation);
+return [nextX, nextY, nextOrientation];
 
 }

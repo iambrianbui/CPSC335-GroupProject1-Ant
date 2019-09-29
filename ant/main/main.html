@@ -9,7 +9,7 @@
   <body>
     <h1> 335 Algorithm Engineering - Cella Ant 12</h1>
     <h3> Brian Bui & Lola Holliday</h3>
-    <canvas id="grid" width="500" height="500"></canvas>
+    <canvas id="grid" width="510" height="510"></canvas>
   </body>
 
 <script src="../assets/draw-stuff.js"></script>
@@ -29,35 +29,30 @@ function draw_title( context )
 // =====================================================  Main ====
   var canvas = document.getElementById( "grid" );
   var context = canvas.getContext( "2d" );
-  var drawX = 0;
-  var drawY = 0;
-  let counter = 0
+  var drawX = canvas.width/2-4;
+  var drawY = canvas.height/2-4;
+  var orientation = 0;                                                  //  0 = facing north, 1 = east, 2 = south, 3 = west
+
+
   //  main loop
+  let counter = 0
+  var drawCoord = [drawX, drawY, orientation];
   const loopDrawRect = setInterval(() => {
     state = counter % 4;
-    draw_rect(context, drawX, drawY, 'lightgrey', state);               //  each cell is 10x10
-    //  logic for the actual ant
-    //if (state % 2 == 0){
+    //  draw_rect(context, drawX, drawY, 'lightgrey', state);               //  each cell is 10x10
 
-    //}
-    //else {
+    drawCoord = move_ant(context, drawCoord);
+    console.log(drawCoord);
 
-    //}
-    drawX += 10;                  //  just to see some life
-    console.log(drawX);
-    console.log(drawY)
     counter += 1;
-    check_color( context, 21, 0);
     if (counter == 1000){
       clearInterval(loopDrawRect);
     }
   }, 800)
 
-
   // Draw a grid
   draw_grid( context, 10, 50, 'white', 'yellow' );
   draw_title( context );
-
 
 
 </script>
