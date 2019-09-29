@@ -27,7 +27,7 @@ function draw_rect( ctx, drawX, drawY, stroke, state )
     ctx.fillStyle = fill;
     ctx.lineWidth = 5;
     ctx.rect(drawX, drawY, canvas.width/50, canvas.height/50);          //  consider how big a cell is
-    console.log(drawX);
+    //  console.log(drawX);
     ctx.stroke();
     ctx.fill();
     ctx.restore( );
@@ -60,4 +60,23 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
         if ( iy % rmajor == 0 ) {rctx.fillText( iy, 0, iy + 10 );}
     }
     rctx.restore( );
+}
+
+// ===================================================== check_color ====
+function check_color(ctx, x, y){
+  var colorVal = ctx.getImageData(x, y, 1, 1).data;
+  console.log(colorVal);
+  /*
+    NOTE:
+    0, 0, 0, 255 = BLACK
+    255, 0, 0, 255 = RED
+    255, 255, 0, 255 = YELLOW
+    0, 0, 255, 255 = BLUE
+  */
+}
+
+
+// ===================================================== move_ant ====
+function move_ant(){
+
 }
