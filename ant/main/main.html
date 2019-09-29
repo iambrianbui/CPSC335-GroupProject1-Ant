@@ -38,9 +38,8 @@ function draw_title( context )
   let counter = 0
   var drawCoord = [drawX, drawY, orientation];
   const loopDrawRect = setInterval(() => {
-    state = counter % 4;
-    //  draw_rect(context, drawX, drawY, 'lightgrey', state);               //  each cell is 10x10
 
+    //  each cell is 10x10
     drawCoord = move_ant(context, drawCoord);
     console.log(drawCoord);
 

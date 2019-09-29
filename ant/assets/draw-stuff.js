@@ -17,18 +17,20 @@ function draw_rect( ctx, drawX, drawY, stroke, state )
     }
 
     //  default values
-    state = state || 0;
+    //  state = state || 0;
     stroke = stroke || 'lightgrey';                                     //  maybe consider deleting this because it's always grey
     //    drawX = drawX || 50
     //    drawY = drawY || 50
 
     ctx.save( );
+    ctx.beginPath();
     ctx.strokeStyle = stroke;
     ctx.fillStyle = fill;
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 1;
     ctx.rect(drawX, drawY, canvas.width/50, canvas.height/50);          //  consider how big a cell is
     ctx.stroke();
     ctx.fill();
+    ctx.closePath();
     ctx.restore( );
 }
 
@@ -86,8 +88,7 @@ function check_color(ctx, x, y){
   else if ((colorVal[0]==0) && (colorVal[1]==0) && (colorVal[2] == 255)) {
     return 3;
   }
-  else
-  return 0;
+  else return 0;
 }
 
 // ===================================================== move_ant ====
