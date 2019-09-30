@@ -1,18 +1,33 @@
 //  This file is a resource to be called on by main.html.
 //  The function is to draw on the canvas.
 
+function draw_huge_rect ( ctx )
+{
+    var fill = "#000000"
+    var stroke = 'lightgrey';                                     //  maybe consider deleting this because it's always grey
+
+    ctx.save( );
+    ctx.strokeStyle = stroke;
+    ctx.fillStyle = fill;
+    ctx.lineWidth = 1;
+    ctx.rect(0, 0, canvas.width, canvas.height);          //  consider how big a cell is
+    ctx.stroke();
+    ctx.fill();
+    ctx.restore( );
+}
+
 
 function draw_rect( ctx, drawX, drawY, stroke, state )
 {
     //  check to see what color to paint
     switch(state){
-      case 0:  fill = 'black';
+      case 0:  fill = "#000000";
       break;
-      case 1:  fill = 'red';
+      case 1:  fill = "#ff0000";
       break;
-      case 2:  fill = 'yellow';
+      case 2:  fill = "#ffff00";
       break;
-      case 3:  fill = 'blue';
+      case 3:  fill = "#0000ff";
       break;
     }
 
@@ -20,7 +35,7 @@ function draw_rect( ctx, drawX, drawY, stroke, state )
     //  state = state || 0;
     stroke = stroke || 'lightgrey';                                     //  maybe consider deleting this because it's always grey
     //    drawX = drawX || 50
-    //    drawY = drawY || 50
+    //    drawY = drawY || 50z
 
     ctx.save( );
     ctx.beginPath();
@@ -65,10 +80,8 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
 
 // ===================================================== check_color ====
 function check_color(ctx, x, y){
-  var colorVal = ctx.getImageData(x, y, 1, 1).data;
+  var colorVal = ctx.getImageData(x, y, canvas.width/50, canvas.height/50).data;
 
-
-  console.log(colorVal);
   /*
     NOTE:
     0, 0, 0, 255 = BLACK
@@ -76,20 +89,31 @@ function check_color(ctx, x, y){
     255, 255, 0, 255 = YELLOW
     0, 0, 255, 255 = BLUE
   */
-  if ((colorVal[0]==0) && (colorVal[1]==0) && (colorVal[2] == 0)){
+  var hexValue = "#" + ("000000" + rgb_to_hex(colorVal[0], colorVal[1], colorVal[2])).slice(-6);
+  console.log(colorVal);
+  if (colorVal[0] < 200 && colorVal[2] < 200){
     return 0;
   }
-  else if ((colorVal[0]==255) && (colorVal[1]==0) && (colorVal[2] == 0)) {
+  else if (colorVal[0] > 220 && colorVal[1] < 200 && colorVal[2] < 200) {
     return 1;
   }
-  else if ((colorVal[0]==255) && (colorVal[1]==255) && (colorVal[2] == 0)) {
+  else if (colorVal[0] > 200 && colorVal[1] > 200) {
     return 2;
   }
-  else if ((colorVal[0]==0) && (colorVal[1]==0) && (colorVal[2] == 255)) {
+  else if (colorVal[3] > 200) {
     return 3;
   }
   else return 0;
 }
+
+// ===================================================== rgb_to_hex ====
+function rgb_to_hex(r, g, b,){
+  return ((r << 16) | (g << 8) | b).toString(16);
+}
+
+// ===================================================== draw_ant ====
+
+
 
 // ===================================================== move_ant ====
 function move_ant(ctx, drawCoord){
@@ -112,34 +136,48 @@ function move_ant(ctx, drawCoord){
   }
 
   //  check current orientation
-  switch (drawCoord[2]) {
+  //  console.log(drawCoord);
+  switch (drawCoord[2]%4) {
+    //  move north
     case 0: nextY-=10;
     break;
+    //  move east
     case 1: nextX+=10;
     break;
+    //  move south
     case 2: nextY+=10;
     break;
+    //  move west
     case 3: nextX-=10;
     break;
   }
 
   //  "Turning"
   var nextState = check_color(ctx, nextX, nextY);
+  //  console.log(nextX + ", " + nextY);
+  var turnText = " ";
+  //  console.log(nextState);
+
   switch (nextState) {
     //  black and red turns right
     case 0:  nextOrientation+=1;
+    turnText = "Black, Go right!";
     break;
     case 1:  nextOrientation+=1;
+    turnText = "Red, Go right!";
     break;
 
     //  yellow and blue turns left
     case 2:  nextOrientation-=1;
+    turnText = "Yellow, Go left!";
     break;
     case 3:  nextOrientation-=1;
+    turnText = "Blue, Go left!";
     break;
+
   }
 
-console.log(nextOrientation);
+console.log(turnText);
 return [nextX, nextY, nextOrientation];
 
 }

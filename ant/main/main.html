@@ -29,10 +29,11 @@ function draw_title( context )
 // =====================================================  Main ====
   var canvas = document.getElementById( "grid" );
   var context = canvas.getContext( "2d" );
-  var drawX = canvas.width/2-4;
-  var drawY = canvas.height/2-4;
+  var drawX = canvas.width/2-3;
+  var drawY = canvas.height/2-3;
   var orientation = 0;                                                  //  0 = facing north, 1 = east, 2 = south, 3 = west
 
+  draw_huge_rect(context);
 
   //  main loop
   let counter = 0
@@ -41,17 +42,17 @@ function draw_title( context )
 
     //  each cell is 10x10
     drawCoord = move_ant(context, drawCoord);
-    console.log(drawCoord);
 
     counter += 1;
     if (counter == 1000){
       clearInterval(loopDrawRect);
     }
-  }, 800)
+  }, 200)
 
   // Draw a grid
   draw_grid( context, 10, 50, 'white', 'yellow' );
   draw_title( context );
+
 
 
 </script>
