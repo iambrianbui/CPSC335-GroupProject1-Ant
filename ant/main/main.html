@@ -31,23 +31,29 @@ function draw_title( context )
   var context = canvas.getContext( "2d" );
   var drawX = canvas.width/2-3;
   var drawY = canvas.height/2-3;
-  var orientation = 0;                                                  //  0 = facing north, 1 = east, 2 = south, 3 = west
+  var orientation = 0;
+  var state = 0;
+                                            //  0 = facing north, 1 = east, 2 = south, 3 = west
 
   draw_huge_rect(context);
 
   //  main loop
   let counter = 0
   var drawCoord = [drawX, drawY, orientation];
+  var cellArray = [];
+
+
   const loopDrawRect = setInterval(() => {
 
     //  each cell is 10x10
-    drawCoord = move_ant(context, drawCoord);
+    drawCoord = move_ant(context, drawCoord, cellArray);
+
 
     counter += 1;
     if (counter == 1000){
       clearInterval(loopDrawRect);
     }
-  }, 200)
+  }, 900)
 
   // Draw a grid
   draw_grid( context, 10, 50, 'white', 'yellow' );

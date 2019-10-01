@@ -90,7 +90,7 @@ function check_color(ctx, x, y){
     0, 0, 255, 255 = BLUE
   */
   var hexValue = "#" + ("000000" + rgb_to_hex(colorVal[0], colorVal[1], colorVal[2])).slice(-6);
-  console.log(colorVal);
+  //  console.log(colorVal);
   if (colorVal[0] < 200 && colorVal[2] < 200){
     return 0;
   }
@@ -100,7 +100,7 @@ function check_color(ctx, x, y){
   else if (colorVal[0] > 200 && colorVal[1] > 200) {
     return 2;
   }
-  else if (colorVal[3] > 200) {
+  else if (colorVal[2] > 200) {
     return 3;
   }
   else return 0;
@@ -117,7 +117,8 @@ function rgb_to_hex(r, g, b,){
 
 // ===================================================== move_ant ====
 function move_ant(ctx, drawCoord){
-  var currentState = check_color(ctx, drawCoord[0], drawCoord[1]);
+  var cellState = [drawCoord[0], drawCoord[1], 0];
+  var currentState = check_array(cellState, cellArray);
   var nextX = drawCoord[0];
   var nextY = drawCoord[1];
   var nextOrientation = drawCoord[2];
@@ -136,7 +137,6 @@ function move_ant(ctx, drawCoord){
   }
 
   //  check current orientation
-  //  console.log(drawCoord);
   switch (drawCoord[2]%4) {
     //  move north
     case 0: nextY-=10;
@@ -156,7 +156,6 @@ function move_ant(ctx, drawCoord){
   var nextState = check_color(ctx, nextX, nextY);
   //  console.log(nextX + ", " + nextY);
   var turnText = " ";
-  //  console.log(nextState);
 
   switch (nextState) {
     //  black and red turns right
@@ -174,10 +173,52 @@ function move_ant(ctx, drawCoord){
     case 3:  nextOrientation-=1;
     turnText = "Blue, Go left!";
     break;
-
   }
 
 console.log(turnText);
 return [nextX, nextY, nextOrientation];
+}
 
+function check_array(cellInfo, cellArray){
+  console.log(cellArray);
+  console.log(is_array_in_array(cellInfo, cellArray));
+  if (is_array_in_array(cellInfo, cellArray)){
+    var nextState = cellInfo[2];
+    switch(cellInfo[2]){
+      case 0:  nextState = 1;
+      break;
+      case 1:  nextState = 2;
+      break;
+      case 2:  nextState = 3;
+      break;
+      case 3:  nextState = 0;
+      break;
+    }
+      var newCell = [cellInfo[0], cellInfo[1], nextState];
+      //var index = cellArray.findIndex(cellInfo);
+      var index = find_index_in_array(cellInfo, cellArray);
+      cellArray.splice(index, 1, newCell);
+      return nextState;
+  }
+  else{
+    cellArray.push(cellInfo);
+    return 0;
+  }
+}
+
+function is_array_in_array(cellInfo, cellArray){
+  var item_as_string = JSON.stringify(cellInfo);
+  var contains = cellArray.some(function(ele){
+    return JSON.stringify(cellInfo) === item_as_string;
+  });
+  console.log(item_as_string);
+  return contains;
+}
+
+function find_index_in_array(cellInfo, cellArray){
+  var item_as_string = JSON.stringify(cellInfo);
+  var contains = cellArray.indexOf(function(ele){
+    return JSON.stringify(cellInfo) === item_as_string;
+  });
+  return contains;
 }
