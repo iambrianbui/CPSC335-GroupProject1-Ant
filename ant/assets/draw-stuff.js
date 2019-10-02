@@ -116,25 +116,12 @@ function rgb_to_hex(r, g, b,){
 
 
 // ===================================================== move_ant ====
-function move_ant(ctx, drawCoord){
+function move_ant(ctx, drawCoord, cellArray){
   var cellState = [drawCoord[0], drawCoord[1], 0];
   var currentState = check_array(cellState, cellArray);
   var nextX = drawCoord[0];
   var nextY = drawCoord[1];
   var nextOrientation = drawCoord[2];
-
-
-  //  change the current color
-  switch(currentState){
-    case 0:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 1 );
-    break;
-    case 1:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 2 );
-    break;
-    case 2:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 3 );
-    break;
-    case 3:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 0 );
-    break;
-  }
 
   //  check current orientation
   switch (drawCoord[2]%4) {
@@ -154,8 +141,21 @@ function move_ant(ctx, drawCoord){
 
   //  "Turning"
   var nextState = check_color(ctx, nextX, nextY);
-  //  console.log(nextX + ", " + nextY);
+  console.log("currentState = " + currentState + "\n nextState = " + nextState);
   var turnText = " ";
+
+  //  change the current color
+  switch(currentState){
+    case 0:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 1 );
+    if (is_array_in_array(drawCoord, cellArray)) splice_array(drawCoord, cellArray);
+    break;
+    case 1:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 2 );
+    break;
+    case 2:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 3 );
+    break;
+    case 3:  draw_rect( ctx, drawCoord[0], drawCoord[1], 'lightgrey', 0 );
+    break;
+  }
 
   switch (nextState) {
     //  black and red turns right
@@ -179,11 +179,23 @@ console.log(turnText);
 return [nextX, nextY, nextOrientation];
 }
 
+//  check if the cell is in the array
 function check_array(cellInfo, cellArray){
-  console.log(cellArray);
+  //  console.log(cellArray);
   console.log(is_array_in_array(cellInfo, cellArray));
   if (is_array_in_array(cellInfo, cellArray)){
-    var nextState = cellInfo[2];
+    return cellInfo[2];
+  }
+
+  else{
+    cellArray.push(cellInfo);
+    return 0;
+  }
+}
+
+//  splice the array
+function splice_array(cellInfo, cellArray){
+  var nextState = cellInfo[2];
     switch(cellInfo[2]){
       case 0:  nextState = 1;
       break;
@@ -198,12 +210,6 @@ function check_array(cellInfo, cellArray){
       //var index = cellArray.findIndex(cellInfo);
       var index = find_index_in_array(cellInfo, cellArray);
       cellArray.splice(index, 1, newCell);
-      return nextState;
-  }
-  else{
-    cellArray.push(cellInfo);
-    return 0;
-  }
 }
 
 function is_array_in_array(cellInfo, cellArray){
@@ -211,7 +217,7 @@ function is_array_in_array(cellInfo, cellArray){
   var contains = cellArray.some(function(ele){
     return JSON.stringify(cellInfo) === item_as_string;
   });
-  console.log(item_as_string);
+  //  console.log(item_as_string);
   return contains;
 }
 
