@@ -41,19 +41,25 @@ function draw_title( context )
   let counter = 0
   var drawCoord = [drawX, drawY, orientation];
   var cellArray = [];
+  var coordArray = [];
+
+  //  basis step
+  coordArray.push([drawX, drawY]);
+  cellArray.push(0);
 
 
   const loopDrawRect = setInterval(() => {
 
-    //  each cell is 10x10
-    drawCoord = move_ant(context, drawCoord, cellArray);
+
+    //  recursion step
+    drawCoord = move_ant(context, drawCoord, cellArray, coordArray);
 
 
     counter += 1;
     if (counter == 1000){
       clearInterval(loopDrawRect);
     }
-  }, 900)
+  }, 200)
 
   // Draw a grid
   draw_grid( context, 10, 50, 'white', 'yellow' );
