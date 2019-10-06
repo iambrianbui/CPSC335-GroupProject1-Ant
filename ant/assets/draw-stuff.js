@@ -105,7 +105,6 @@ function move_ant(ctx, drawCoord, cellArray, coordArray){
   nextIndex = return_array_index(nextCoord, coordArray, cellArray);
   currentIndex = return_array_index(currentCoord, coordArray, cellArray);
 
-  console.log(nextIndex);
   if (nextIndex == -1){
     add_to_arrays(nextCoord, coordArray, cellArray);
     nextIndex = (coordArray.length-1);
@@ -157,33 +156,18 @@ console.log(turnText);
 return [nextX, nextY, nextOrientation];
 }
 
+// ===================================================== return_array_index ====
 function return_array_index(coordinates, coordArray, cellArray){
   for (var i = 0; i < coordArray.length; i++){
     if (coordArray[i][0] == coordinates[0] && coordArray[i][1] == coordinates[1]){
       return i;
     }
   }
-  return -1;
+  return -1;                      //  doesn't exist
 }
 
+// ===================================================== add_to_arrays ====
 function add_to_arrays(coordinates, coordArray, cellArray){
   coordArray.push(coordinates);
   cellArray.push(0);
-}
-
-function change_cellArray(cellArray, index){
-    switch (cellArray[index]) {
-      case 0:
-      cellArray[index] = 1;
-      break;
-      case 1:
-      cellArray[index] = 2;
-      break;
-      case 2:
-      cellArray[index] = 3;
-      break;
-      case 3:
-      cellArray[index] = 0;
-      break;
-  }
 }

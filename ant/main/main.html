@@ -50,8 +50,7 @@ function draw_title( context )
 
   const loopDrawRect = setInterval(() => {
 
-
-    //  recursion step
+    //  loop
     drawCoord = move_ant(context, drawCoord, cellArray, coordArray);
 
 
@@ -61,7 +60,7 @@ function draw_title( context )
     if (counter == 1000){
       clearInterval(loopDrawRect);
     }
-  }, 200)
+  }, 50)
 
   // Draw a grid
   draw_grid( context, 10, 50, 'white', 'yellow' );
