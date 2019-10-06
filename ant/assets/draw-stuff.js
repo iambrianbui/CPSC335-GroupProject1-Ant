@@ -83,6 +83,7 @@ function move_ant(ctx, drawCoord, cellArray, coordArray){
   var nextX = drawCoord[0];
   var nextY = drawCoord[1];
   var nextOrientation = drawCoord[2];
+  var currentCoord = [drawCoord[0], drawCoord[1]];
 
   //  check current orientation
   switch (drawCoord[2]%4) {
@@ -102,12 +103,14 @@ function move_ant(ctx, drawCoord, cellArray, coordArray){
 
   nextCoord = [nextX, nextY];
   nextIndex = return_array_index(nextCoord, coordArray, cellArray);
+  currentIndex = return_array_index(currentCoord, coordArray, cellArray);
+
   console.log(nextIndex);
   if (nextIndex == -1){
     add_to_arrays(nextCoord, coordArray, cellArray);
     nextIndex = (coordArray.length-1);
   }
-  currentIndex = nextIndex-1
+
   if (cellArray[currentIndex] === undefined){currentState = 0;}
   else {currentState = cellArray[currentIndex];}
 
